@@ -1,0 +1,18 @@
+[
+  {
+    "nombre": "Diego",
+    "edad": 20,
+    "disciplina": "ATLETISMO",
+    "departamento": "Guatemala",
+    "sesiones": [
+      {
+        "fecha": "2025-08-24",
+        "marca": 100.0
+      },
+      {
+        "fecha": "2025-08-25",
+        "marca": 150.0
+      }
+    ]
+  }
+]
