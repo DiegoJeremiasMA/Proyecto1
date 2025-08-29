@@ -1,0 +1,95 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+skinparam packageStyle rect
+skinparam shadowing false
+
+title Diagrama de Clases - Sistema de Atletas
+
+class Main {
+  - {static} List<Atleta> atletas
+  - {static} Gson gson
+  - {static} final String NOMBRE_ARCHIVO
+  + {static} void main(String[] args)
+  - {static} void registrarAtleta(Scanner)
+  - {static} void registrarSesion(Scanner)
+  - {static} void mostrarHistorial(Scanner)
+  - {static} void mostrarEstadisticas(Scanner)
+  - {static} Atleta seleccionarAtleta(Scanner)
+  - {static} Disciplina seleccionarDisciplina(Scanner)
+  - {static} void guardarDatos()
+  - {static} void cargarDatos()
+  - {static} String formatearFechaParaMostrar(String)
+}
+
+class Atleta {
+  - String nombre
+  - int edad
+  - Disciplina disciplina
+  - String departamento
+  - List<SesionEntrenamiento> sesiones
+  + Atleta(String, int, Disciplina, String)
+  + void agregarSesion(SesionEntrenamiento)
+  + String getNombre()
+  + Disciplina getDisciplina()
+  + List<SesionEntrenamiento> getSesiones()
+}
+
+class SesionEntrenamiento {
+  - String fecha
+  - double marca
+  + SesionEntrenamiento(String, double)
+  + String getFecha()
+  + double getMarca()
+}
+
+class Estadistica {
+  + {static} double calcularPromedio(List<SesionEntrenamiento>)
+  + {static} double encontrarMejorMarca(List<SesionEntrenamiento>, Disciplina)
+  + {static} List<SesionEntrenamiento> obtenerEvolucion(List<SesionEntrenamiento>)
+}
+
+enum Disciplina {
+  ATLETISMO
+  NATACION
+  LEVANTAMIENTO_PESAS
+  CICLISMO
+  BOXEO
+  --
+  - final String nombreMostrado
+  - final String unidad
+  --
+  + String getNombreMostrado()
+  + String getUnidad()
+  + boolean menorEsMejor()
+}
+
+Main ..> Atleta : "usa"
+Main ..> SesionEntrenamiento : "usa"
+Main ..> Estadistica : "usa"
+Main ..> Disciplina : "usa"
+
+Atleta "1" *-- "0..*" SesionEntrenamiento : "tiene"
+Atleta "1" -- "1" Disciplina : "pertenece a"
+
+note left of Estadistica
+Principio de Responsabilidad Única (SRP)
+Su única responsabilidad es realizar cálculos.
+end note
+
+note right of Atleta
+Principio de Responsabilidad Única (SRP)
+Su única responsabilidad es modelar y contener datos.
+end note
+
+note right of SesionEntrenamiento
+Principio de Responsabilidad Única (SRP)
+Su única responsabilidad es modelar y contener datos.
+end note
+
+note left of Main
+Principio de Responsabilidad Única (SRP)
+Su única responsabilidad es manejar la interacción con el usuario y coordinar las demás clases.
+end note
+
+@enduml
