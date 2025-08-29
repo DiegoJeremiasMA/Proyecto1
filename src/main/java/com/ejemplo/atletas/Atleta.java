@@ -6,25 +6,21 @@ import java.util.List;
 public class Atleta {
     private String nombre;
     private int edad;
-    private Disciplina disciplina; // MODIFICADO: Antes era String
+    private Disciplina disciplina;
     private String departamento;
     private List<SesionEntrenamiento> sesiones;
 
-    // CONSTRUCTOR MODIFICADO
     public Atleta(String nombre, int edad, Disciplina disciplina, String departamento) {
         this.nombre = nombre;
         this.edad = edad;
-        this.disciplina = disciplina; // MODIFICADO
+        this.disciplina = disciplina;
         this.departamento = departamento;
         this.sesiones = new ArrayList<>();
     }
 
-    // GETTER MODIFICADO
     public Disciplina getDisciplina() {
         return disciplina;
     }
-
-    // ... los demás getters, setters y el método agregarSesion no cambian ...
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }

@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,7 +16,7 @@ public class Main {
 
     private static List<Atleta> atletas = new ArrayList<>();
     private static final String NOMBRE_ARCHIVO = "atletas.json";
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void main(String[] args) {
         cargarDatos();
@@ -34,7 +33,7 @@ public class Main {
 
             System.out.print("Seleccione una opción: ");
             opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir nueva línea
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1:
@@ -64,9 +63,8 @@ public class Main {
         String nombre = scanner.nextLine();
         System.out.print("Edad: ");
         int edad = scanner.nextInt();
-        scanner.nextLine(); // Limpiar buffer
+        scanner.nextLine();
 
-        // Nuevo menú de disciplina
         Disciplina disciplinaSeleccionada = seleccionarDisciplina(scanner);
 
         System.out.print("Departamento: ");
@@ -91,7 +89,7 @@ public class Main {
                 System.out.println("Opción no válida. Inténtelo de nuevo.");
             }
         }
-        scanner.nextLine(); // Limpiar buffer
+        scanner.nextLine();
         return disciplinas[opcion - 1];
     }
 
@@ -99,7 +97,6 @@ public class Main {
         Atleta atleta = seleccionarAtleta(scanner);
         if (atleta == null) return;
 
-        // --- SECCIÓN MODIFICADA PARA LA FECHA ---
         System.out.println("Ingrese la fecha de la sesión:");
         System.out.print(" -> Día (DD): ");
         int dia = scanner.nextInt();
@@ -107,20 +104,15 @@ public class Main {
         int mes = scanner.nextInt();
         System.out.print(" -> Año (YYYY): ");
         int anio = scanner.nextInt();
-        scanner.nextLine(); // Limpiar el buffer después de leer el último número
+        scanner.nextLine();
 
-        // Formateamos la fecha al formato YYYY-MM-DD para mantener la consistencia interna
-        // Esto es importante para que la función de ordenar por fecha siga funcionando bien.
         String fecha = String.format("%04d-%02d-%02d", anio, mes, dia);
-        // ------------------------------------------
 
-        // Muestra la unidad correcta
         String unidad = atleta.getDisciplina().getUnidad();
         System.out.print("Marca (" + unidad + "): ");
         double marca = scanner.nextDouble();
-        scanner.nextLine(); // Limpiar buffer
+        scanner.nextLine();
 
-        // Se crea la sesión sin el parámetro 'tipo'
         atleta.agregarSesion(new SesionEntrenamiento(fecha, marca));
         System.out.println("Sesión registrada con éxito.");
     }
@@ -135,7 +127,6 @@ public class Main {
             System.out.println("No hay sesiones registradas.");
         } else {
             for (SesionEntrenamiento sesion : atleta.getSesiones()) {
-                // Usamos el nuevo método para formatear la fecha
                 String fechaMostrada = formatearFechaParaMostrar(sesion.getFecha());
                 System.out.println("Fecha: " + fechaMostrada + ", Marca: " + sesion.getMarca() + " " + unidad);
             }
@@ -164,7 +155,6 @@ public class Main {
         System.out.println("Evolución (ordenado por fecha):");
         List<SesionEntrenamiento> evolucion = Estadistica.obtenerEvolucion(sesiones);
         for (SesionEntrenamiento sesion : evolucion) {
-            // Usamos el nuevo método también aquí
             String fechaMostrada = formatearFechaParaMostrar(sesion.getFecha());
             System.out.println(" -> Fecha: " + fechaMostrada + ", Marca: " + sesion.getMarca() + " " + unidad);
         }
@@ -216,13 +206,12 @@ public class Main {
 
     private static String formatearFechaParaMostrar(String fechaISO) {
         if (fechaISO == null || fechaISO.length() != 10) {
-            return fechaISO; // Devuelve el original si no tiene el formato esperado
+            return fechaISO;
         }
         String[] partes = fechaISO.split("-");
         if (partes.length != 3) {
             return fechaISO;
         }
-        // Reordena las partes de YYYY, MM, DD a DD, MM, YYYY
         return partes[2] + "-" + partes[1] + "-" + partes[0];
     }
 }
